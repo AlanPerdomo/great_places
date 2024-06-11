@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:great_places/utils/app_routes.dart';
 
 class PlacesListScreen extends StatelessWidget {
-  const PlacesListScreen({super.key});
+  const PlacesListScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +18,10 @@ class PlacesListScreen extends StatelessWidget {
           )
         ],
       ),
-      body: const Center(
-        child: CircularProgressIndicator(),
+      body: Center(
+        child: CircularProgressIndicator(
+          color: Theme.of(context).colorScheme.secondary,
+        ),
       ),
     );
   }
