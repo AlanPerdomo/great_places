@@ -4,18 +4,19 @@ import 'package:great_places/models/place.dart';
 
 class MapScreen extends StatefulWidget {
   final PlaceLocation initialLocation;
-  final bool isReadonly;
+  final bool isReadOnly;
 
-  MapScreen({
-    this.initialLocation = const PlaceLocation(
-      latitude: 37.419857,
-      longitude: -122.078827,
-    ),
-    this.isReadonly = false,
-  });
+  const MapScreen(
+      {this.initialLocation = const PlaceLocation(
+        latitude: 37.419857,
+        longitude: -122.078827,
+      ),
+      this.isReadOnly = false,
+      Key? key})
+      : super(key: key);
 
   @override
-  _MapScreenState createState() => _MapScreenState();
+  State<MapScreen> createState() => _MapScreenState();
 }
 
 class _MapScreenState extends State<MapScreen> {
@@ -31,17 +32,17 @@ class _MapScreenState extends State<MapScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Selecione...'),
+        title: const Text('Selecione...'),
         actions: [
-          if (!widget.isReadonly)
+          if (!widget.isReadOnly)
             IconButton(
-              icon: Icon(Icons.check),
+              icon: const Icon(Icons.check),
               onPressed: _pickedPosition == null
                   ? null
                   : () {
                       Navigator.of(context).pop(_pickedPosition);
                     },
-            )
+            ),
         ],
       ),
       body: GoogleMap(
@@ -52,13 +53,14 @@ class _MapScreenState extends State<MapScreen> {
           ),
           zoom: 13,
         ),
-        onTap: widget.isReadonly ? null : _selectPosition,
-        markers: _pickedPosition == null
+        onTap: widget.isReadOnly ? null : _selectPosition,
+        markers: (_pickedPosition == null && !widget.isReadOnly)
             ? {}
             : {
                 Marker(
                   markerId: const MarkerId('p1'),
-                  position: _pickedPosition!,
+                  position:
+                      _pickedPosition ?? widget.initialLocation.toLatLng(),
                 )
               },
       ),
